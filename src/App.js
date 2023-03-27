@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState, useMemo, useCallback} from 'react'
+import Title from './components/Title'
+import ShowCount from './components/ShowCount'
+import Button from './components/Button'
+export default function App(){
+  const [count1,setCount1] = useState(0)
+  const [count2,setCount2] = useState(0)
+  const incrementByOne = useCallback(() => {
+    setCount1((prevCount) => prevCount + 1)
+  },[])
 
-function App() {
+
+  const isEvenOrOdd = useMemo(() => {
+    let i = 0;
+    while(i < 1000000000) i += 1
+    return count1 % 2 === 0;
+  },[count1])
+
+  const incrementByFive = useCallback(() => {
+    setCount2((prevCount) => prevCount + 5)
+  },[])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <Title title="useCallback and useMemo" />
+      <ShowCount count={count1} title="Counter 1" />
+      <span>{isEvenOrOdd ? 'Even' :  'Odd'}</span>
+      <br/>
+      <Button increment={incrementByOne} title="Increment By One" />
+      <hr />
+      <ShowCount count={count2} title="Counter 2" />
+      <Button increment={incrementByFive} title="Increment By Five" />
+    </>
+  )
 }
-
-export default App;
